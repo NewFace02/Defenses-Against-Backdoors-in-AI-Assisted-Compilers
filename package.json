@@ -1,0 +1,23 @@
+{
+  "name": "defenses-against-backdoors-in-ai-compilers",
+  "version": "1.0.0",
+  "description": "Research on defenses against backdoor attacks in AI-assisted compilers",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:pdf": "node scripts/build-pdf.js",
+    "clean": "node scripts/clean.js"
+  },
+  "keywords": [
+    "security",
+    "backdoor",
+    "ai",
+    "compiler",
+    "llm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "marked": "^11.1.1",
+    "markdown-pdf": "^10.0.0"
+  }
+}
