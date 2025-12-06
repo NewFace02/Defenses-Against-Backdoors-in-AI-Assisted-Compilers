@@ -39,16 +39,13 @@ function findMarkdownFiles(dir) {
 // Main build process
 console.log('🚀 Starting Markdown to PDF compilation...\n');
 
-// Find all markdown files
-const markdownFiles = [
-  ...findMarkdownFiles(SOURCE_DIR).filter(f => {
-    const relative = path.relative(SOURCE_DIR, f);
-    return !relative.includes('node_modules') && 
-           !relative.includes('dist') && 
-           !relative.startsWith('.');
-  }),
-  ...findMarkdownFiles(DOCS_DIR)
-];
+// Find all markdown files in SOURCE_DIR (which includes docs/ as a subdirectory)
+const markdownFiles = findMarkdownFiles(SOURCE_DIR).filter(f => {
+  const relative = path.relative(SOURCE_DIR, f);
+  return !relative.includes('node_modules') && 
+         !relative.includes('dist') && 
+         !relative.startsWith('.');
+});
 
 if (markdownFiles.length === 0) {
   console.log('⚠️  No markdown files found to compile.');
@@ -74,9 +71,14 @@ for (const mdFile of markdownFiles) {
   
   markdownpdf()
     .from(mdFile)
-    .to(outputPath, () => {
-      completed++;
-      console.log(`✓ Generated ${outputPath}`);
+    .to(outputPath, (err) => {
+      if (err) {
+        errors++;
+        console.error(`✗ Failed to generate ${outputPath}:`, err.message);
+      } else {
+        completed++;
+        console.log(`✓ Generated ${outputPath}`);
+      }
       
       if (completed + errors === markdownFiles.length) {
         console.log(`\n✅ Successfully compiled ${completed} markdown file(s) to PDF!`);
@@ -87,9 +89,3 @@ for (const mdFile of markdownFiles) {
       }
     });
 }
-
-// Handle errors
-process.on('uncaughtException', (err) => {
-  errors++;
-  console.error('Error:', err.message);
-});

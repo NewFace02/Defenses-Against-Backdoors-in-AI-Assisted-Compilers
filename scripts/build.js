@@ -136,16 +136,13 @@ function findMarkdownFiles(dir) {
 // Main build process
 console.log('🚀 Starting Markdown to HTML compilation...\n');
 
-// Find all markdown files
-const markdownFiles = [
-  ...findMarkdownFiles(SOURCE_DIR).filter(f => {
-    const relative = path.relative(SOURCE_DIR, f);
-    return !relative.includes('node_modules') && 
-           !relative.includes('dist') && 
-           !relative.startsWith('.');
-  }),
-  ...findMarkdownFiles(DOCS_DIR)
-];
+// Find all markdown files in SOURCE_DIR (which includes docs/ as a subdirectory)
+const markdownFiles = findMarkdownFiles(SOURCE_DIR).filter(f => {
+  const relative = path.relative(SOURCE_DIR, f);
+  return !relative.includes('node_modules') && 
+         !relative.includes('dist') && 
+         !relative.startsWith('.');
+});
 
 if (markdownFiles.length === 0) {
   console.log('⚠️  No markdown files found to compile.');
