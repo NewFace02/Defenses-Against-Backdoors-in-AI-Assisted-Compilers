@@ -40,13 +40,15 @@ README.md            →  dist/README.html
 
 ### 编译为PDF
 
+⚠️ **安全警告**: `markdown-pdf` 库存在已知的本地文件读取和XSS安全漏洞，目前无可用修复版本。仅在本地受信任环境中使用。
+
 ```bash
 npm run build:pdf
 ```
 
 将Markdown文件编译为PDF格式（需要PhantomJS）。
 
-**注意：** PDF编译功能使用的依赖包较旧，可能在某些环境中不稳定。推荐使用HTML编译。
+**注意：** PDF编译功能使用的依赖包较旧，可能在某些环境中不稳定。**推荐使用HTML编译**。
 
 ### 清理编译输出
 

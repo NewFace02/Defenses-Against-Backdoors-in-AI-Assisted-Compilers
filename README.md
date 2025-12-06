@@ -33,6 +33,8 @@ npm run build
 
 ### 编译MD为PDF (Compile MD to PDF)
 
+⚠️ **注意**: PDF编译功能使用的 `markdown-pdf` 库存在已知的安全漏洞（XSS），且目前没有可用的修复版本。建议仅在本地受信任的环境中使用，或使用HTML编译替代。
+
 ```bash
 npm run build:pdf
 ```
