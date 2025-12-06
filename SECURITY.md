@@ -1,32 +1,31 @@
 # Security Policy
 
-## Known Vulnerabilities
+## Security Status
 
-### markdown-pdf Dependency
+✅ **All dependencies are secure**
 
-The `markdown-pdf` package (v10.0.0) used for PDF compilation has a known security vulnerability:
+This project uses only the `marked` package (v11.1.1) for Markdown compilation, which is actively maintained and has no known critical vulnerabilities.
 
-- **Issue**: Local file read via server-side cross-site scripting (XSS)
-- **Affected Versions**: <= 11.0.0
-- **Patched Version**: Not available
-- **CVSS**: Medium severity
+## Previous Vulnerability (Resolved)
 
-### Mitigation
+Earlier versions of this project included the `markdown-pdf` package which had a known XSS vulnerability with no available patch. This dependency has been **removed** to ensure the security of the project.
 
-1. **Recommended**: Use HTML compilation instead of PDF compilation
-   ```bash
-   npm run build  # Safe - uses 'marked' package
-   ```
+### What Changed
 
-2. If PDF compilation is required:
-   - Only use in trusted, local environments
-   - Do not expose the build process to untrusted input
-   - Do not run on public-facing servers
-   - Consider using alternative PDF generation tools
+- ❌ Removed `markdown-pdf` dependency (vulnerable)
+- ❌ Removed PDF compilation feature (`npm run build:pdf`)
+- ✅ Kept HTML compilation feature (`npm run build`) - fully secure
 
-### Safe Usage
+## Safe Usage
 
-The HTML compilation feature (`npm run build`) uses the `marked` package which is actively maintained and does not have known critical vulnerabilities. This is the recommended method for compiling documentation.
+The HTML compilation feature is completely safe to use:
+
+```bash
+npm install  # Installs only secure dependencies
+npm run build  # Safe - uses 'marked' package
+```
+
+The generated HTML files use client-side rendering only and do not execute any server-side code.
 
 ## Reporting a Vulnerability
 

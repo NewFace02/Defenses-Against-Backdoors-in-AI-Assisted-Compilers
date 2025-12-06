@@ -10,7 +10,7 @@ The `References/` directory contains academic papers and resources on:
 
 ## 📝 编译Markdown文件 (Compiling Markdown Files)
 
-本项目支持将Markdown文件编译为HTML或PDF格式。
+本项目支持将Markdown文件编译为HTML格式。
 
 ### 前置要求 (Prerequisites)
 
@@ -31,26 +31,15 @@ npm run build
 
 这将把所有的 `.md` 文件编译为 HTML 文件，输出到 `dist/` 目录。
 
-### 编译MD为PDF (Compile MD to PDF)
-
-⚠️ **注意**: PDF编译功能使用的 `markdown-pdf` 库存在已知的安全漏洞（XSS），且目前没有可用的修复版本。建议仅在本地受信任的环境中使用，或使用HTML编译替代。
-
-```bash
-npm run build:pdf
-```
-
-这将把所有的 `.md` 文件编译为 PDF 文件，输出到 `dist/` 目录。
-
 ### 查看编译结果 (View Results)
 
-编译后的文件位于 `dist/` 目录中，可以直接在浏览器中打开HTML文件，或使用PDF阅读器查看PDF文件。
+编译后的文件位于 `dist/` 目录中，可以直接在浏览器中打开HTML文件。
 
 ## 🛠️ Development
 
 ### Available Scripts
 
 - `npm run build` - 编译Markdown为HTML
-- `npm run build:pdf` - 编译Markdown为PDF
 - `npm run clean` - 清理编译输出
 
 ## 📖 Documentation Structure
