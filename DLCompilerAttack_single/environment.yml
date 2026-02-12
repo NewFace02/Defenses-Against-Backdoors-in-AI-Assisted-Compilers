@@ -1,0 +1,13 @@
+name: dclbd_task0_cl0_min
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pillow
+  - tqdm
+  - pytorch
+  - torchvision
+  - torchaudio
