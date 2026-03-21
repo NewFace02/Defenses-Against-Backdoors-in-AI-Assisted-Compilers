@@ -1,0 +1,16 @@
+{
+  "attack_family": "saser_style",
+  "model_family": "cnn",
+  "mode": "robust",
+  "clean_model_path": "checkpoints/clean_model_best.pth",
+  "output_dir": "Reproduction/StegoUnified/outputs/cnn/cnn_fc1_q8_pkg",
+  "target_group": "fc1.weight",
+  "group_type": "tensor",
+  "q_bits": 8,
+  "block_size": 32,
+  "repetition_n": 5,
+  "payload_len_bits": 256,
+  "extra": {
+    "note": "cnn unified package"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "attack_family": "saser_style",
+  "model_family": "llm",
+  "mode": "robust",
+  "clean_model_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "output_dir": "Reproduction/StegoUnified/outputs/llm/llm_q8_pkg",
+  "target_group": null,
+  "group_type": "layer",
+  "q_bits": 8,
+  "block_size": 32,
+  "repetition_n": 5,
+  "payload_len_bits": 256,
+  "extra": {
+    "note": "llm unified package real robust full-search"
+  }
+}
