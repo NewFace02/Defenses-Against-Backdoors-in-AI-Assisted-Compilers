@@ -15,11 +15,17 @@ from Reproduction.CNN_Stego.src.attack import (
 )
 
 CHECKPOINT_PATH = os.path.join("checkpoints", "clean_model_best.pth")
-STEGO_CHECKPOINT_PATH = os.path.join("checkpoints", "cnn_stego_fc1_q8.pth")
+
+
+def build_stego_checkpoint_path(param_name: str, q_bits: int = 8) -> str:
+    safe_name = param_name.replace(".", "_")
+    return os.path.join("checkpoints", f"cnn_stego_{safe_name}_q{q_bits}.pth")
 
 
 def main():
+    # ============================================================
     # 1) basic setup
+    # ============================================================
     clear_gpu()
     set_seed(2026)
     device = get_device()
@@ -28,7 +34,9 @@ def main():
     print(f"Device: {device}")
     print("=" * 80)
 
+    # ============================================================
     # 2) dataloader
+    # ============================================================
     print("[1] Loading CIFAR10 dataloaders...")
     train_loader, valid_loader, test_loader = load_dataloader(
         train_batch=128,
@@ -36,11 +44,15 @@ def main():
         is_shuffle=True,
     )
 
+    # ============================================================
     # 3) model
+    # ============================================================
     print("[2] Building ConvNet...")
     model = ConvNet(10).to(device)
 
+    # ============================================================
     # 4) load clean checkpoint
+    # ============================================================
     print("[3] Loading clean checkpoint...")
     if not os.path.exists(CHECKPOINT_PATH):
         raise FileNotFoundError(f"Checkpoint not found: {CHECKPOINT_PATH}")
@@ -49,7 +61,9 @@ def main():
     model.load_state_dict(state_dict)
     print(f"Loaded checkpoint from: {CHECKPOINT_PATH}")
 
+    # ============================================================
     # 5) core
+    # ============================================================
     print("[4] Building CNNStegoCore...")
     core = CNNStegoCore(
         model=model,
@@ -58,11 +72,15 @@ def main():
         verbose=True,
     )
 
+    # ============================================================
     # 6) print candidate params
+    # ============================================================
     print("[5] Candidate parameter tensors:")
     core.print_candidate_params()
 
+    # ============================================================
     # 7) evaluate clean model
+    # ============================================================
     print("[6] Evaluating clean model on validation set...")
     metrics = core.evaluate_clean()
 
@@ -75,10 +93,70 @@ def main():
     print(f"Total   : {metrics['total']}")
     print("=" * 80)
 
-        # 8) safe perturbation smoke test
-    print("[7] Running safe perturbation smoke test on fc1.weight ...")
+    # ============================================================
+    # 8) generate payload first
+    # ============================================================
+    print("[7] Generating payload bits...")
+    payload_bits = get_random_bits(length=256, n=8)
+    print(f"Payload length (bits): {len(payload_bits)}")
+    print("=" * 80)
+
+    # ============================================================
+    # 9) scan best target FIRST
+    # ============================================================
+    print("[8] Scanning best target tensor for current payload (Q8) ...")
+    scan_results = core.scan_best_target(
+        payload_bits=payload_bits,
+        q_bits=8,
+        block_size=32,
+        n=5,
+        min_numel=1024,
+        dataloader=valid_loader,
+    )
+
+    print("=" * 80)
+    print("Best target scan results")
+    print("=" * 80)
+    for i, item in enumerate(scan_results):
+        if item["status"] == "ok":
+            print(
+                f"[{i}] {item['param_name']:<20} "
+                f"status={item['status']:<16} "
+                f"usable_bits={item['usable_data_bits']:<8} "
+                f"acc_shift_abs={item['acc_shift_abs']:.6f} "
+                f"bit_errors={item['bit_errors']}"
+            )
+        else:
+            print(
+                f"[{i}] {item['param_name']:<20} "
+                f"status={item['status']:<16} "
+                f"usable_bits={item.get('usable_data_bits', -1):<8} "
+                f"required_bits={item.get('required_bits', -1)}"
+            )
+    print("=" * 80)
+
+    if len(scan_results) == 0 or scan_results[0]["status"] != "ok":
+        raise RuntimeError("No valid target tensor found by scan_best_target().")
+
+    best = scan_results[0]
+    best_param_name = best["param_name"]
+    stego_checkpoint_path = build_stego_checkpoint_path(best_param_name, q_bits=8)
+
+    print("Selected best target tensor")
+    print("=" * 80)
+    print(f"Param name        : {best_param_name}")
+    print(f"Acc shift abs     : {best['acc_shift_abs']:.6f}")
+    print(f"Usable bits       : {best['usable_data_bits']}")
+    print(f"Bit errors        : {best['bit_errors']}")
+    print(f"Save path         : {stego_checkpoint_path}")
+    print("=" * 80)
+
+    # ============================================================
+    # 10) safe perturbation smoke test on BEST target
+    # ============================================================
+    print(f"[9] Running safe perturbation smoke test on {best_param_name} ...")
     smoke = core.perturb_param_and_measure(
-        param_name="fc1.weight",
+        param_name=best_param_name,
         epsilon=1e-4,
         max_edit_elems=2048,
         dataloader=valid_loader,
@@ -99,17 +177,19 @@ def main():
     print(f"Loss restore gap  : {smoke['loss_restore_gap']:.6f}")
     print("=" * 80)
 
-        # 9) capacity estimation
-    print("[8] Estimating payload capacity on fc1.weight ...")
+    # ============================================================
+    # 11) capacity estimation on BEST target
+    # ============================================================
+    print(f"[10] Estimating payload capacity on {best_param_name} ...")
     cap_q8 = core.get_param_capacity_info(
-        param_name="fc1.weight",
+        param_name=best_param_name,
         q_bits=8,
         block_size=32,
         use_ecc=True,
         repetition_factor=5,
     )
     cap_q4 = core.get_param_capacity_info(
-        param_name="fc1.weight",
+        param_name=best_param_name,
         q_bits=4,
         block_size=32,
         use_ecc=True,
@@ -117,7 +197,7 @@ def main():
     )
 
     print("=" * 80)
-    print("Capacity estimation on fc1.weight")
+    print(f"Capacity estimation on {best_param_name}")
     print("=" * 80)
     print(
         f"Q8  -> writable={cap_q8['writable_positions']}, "
@@ -131,23 +211,25 @@ def main():
     )
     print("=" * 80)
 
-    # 10) quantization roundtrip test
-    print("[9] Running quantization roundtrip test on fc1.weight ...")
+    # ============================================================
+    # 12) quantization roundtrip test on BEST target
+    # ============================================================
+    print(f"[11] Running quantization roundtrip test on {best_param_name} ...")
     rt_q8 = core.quantize_roundtrip_and_measure(
-        param_name="fc1.weight",
+        param_name=best_param_name,
         q_bits=8,
         block_size=32,
         dataloader=valid_loader,
     )
     rt_q4 = core.quantize_roundtrip_and_measure(
-        param_name="fc1.weight",
+        param_name=best_param_name,
         q_bits=4,
         block_size=32,
         dataloader=valid_loader,
     )
 
     print("=" * 80)
-    print("Quantization roundtrip test on fc1.weight")
+    print(f"Quantization roundtrip test on {best_param_name}")
     print("=" * 80)
     print(
         f"Q8  -> mse={rt_q8['roundtrip_mse']:.8e}, "
@@ -165,12 +247,12 @@ def main():
     )
     print("=" * 80)
 
-        # 11) first real stego test
-    print("[10] Running first real stego test on fc1.weight (Q8) ...")
-    payload_bits = get_random_bits(length=256, n=8)
-
+    # ============================================================
+    # 13) first real stego test on BEST target
+    # ============================================================
+    print(f"[12] Running first real stego test on {best_param_name} (Q8) ...")
     stego = core.embed_extract_and_measure(
-        param_name="fc1.weight",
+        param_name=best_param_name,
         payload_bits=payload_bits,
         q_bits=8,
         block_size=32,
@@ -179,7 +261,7 @@ def main():
     )
 
     print("=" * 80)
-    print("First real stego test on fc1.weight")
+    print(f"First real stego test on {best_param_name}")
     print("=" * 80)
     print(f"Param name        : {stego['param_name']}")
     print(f"Q bits            : {stego['q_bits']}")
@@ -194,60 +276,25 @@ def main():
     print(f"Stream bits used  : {stego['embed_info']['stream_bits']}")
     print("=" * 80)
 
-    # 12) scan best target
-    print("[11] Scanning best target tensor for current payload (Q8) ...")
-    scan_results = core.scan_best_target(
-        payload_bits=payload_bits,
-        q_bits=8,
-        block_size=32,
-        n=5,
-        min_numel=1024,
-        dataloader=valid_loader,
-    )
-
-    print("=" * 80)
-    print("Best target scan results")
-    print("=" * 80)
-    for i, item in enumerate(scan_results):
-        if item["status"] == "ok":
-            print(
-                f"[{i}] {item['param_name']:<15} "
-                f"status={item['status']:<16} "
-                f"usable_bits={item['usable_data_bits']:<8} "
-                f"acc_shift_abs={item['acc_shift_abs']:.6f} "
-                f"bit_errors={item['bit_errors']}"
-            )
-        else:
-            print(
-                f"[{i}] {item['param_name']:<15} "
-                f"status={item['status']:<16} "
-                f"usable_bits={item.get('usable_data_bits', -1):<8} "
-                f"required_bits={item.get('required_bits', -1)}"
-            )
-    print("=" * 80)
-
-    if len(scan_results) > 0 and scan_results[0]["status"] == "ok":
-        best = scan_results[0]
-        print("Current best target:")
-        print(
-            f"param={best['param_name']}, "
-            f"acc_shift_abs={best['acc_shift_abs']:.6f}, "
-            f"usable_bits={best['usable_data_bits']}, "
-            f"bit_errors={best['bit_errors']}"
-        )
-    print("=" * 80)
-
-        # 13) save one stego checkpoint
-    print("[12] Saving one stego checkpoint on fc1.weight (Q8) ...")
-
+    # ============================================================
+    # 14) save stego checkpoint on BEST target
+    # ============================================================
+    print(f"[13] Saving one stego checkpoint on {best_param_name} (Q8) ...")
     save_info = core.embed_and_save_checkpoint(
-        save_path=STEGO_CHECKPOINT_PATH,
-        param_name="fc1.weight",
+        save_path=stego_checkpoint_path,
+        param_name=best_param_name,
         payload_bits=payload_bits,
         q_bits=8,
         block_size=32,
         n=5,
-        extra_meta={"note": "first cnn stego checkpoint"},
+        extra_meta={
+            "note": "cnn stego checkpoint saved on scanned best target",
+            "selected_by": "scan_best_target",
+            "best_param_name": best_param_name,
+            "best_acc_shift_abs": best["acc_shift_abs"],
+            "best_usable_bits": best["usable_data_bits"],
+            "best_bit_errors": best["bit_errors"],
+        },
     )
 
     print("=" * 80)
@@ -261,10 +308,12 @@ def main():
     print(f"Repetition n      : {save_info['stego_meta']['n']}")
     print("=" * 80)
 
-        # 14) reload saved checkpoint and verify extraction
-    print("[13] Reloading saved stego checkpoint and verifying extraction ...")
+    # ============================================================
+    # 15) reload saved checkpoint and verify extraction
+    # ============================================================
+    print("[14] Reloading saved stego checkpoint and verifying extraction ...")
     verify_info = verify_saved_stego_checkpoint(
-        checkpoint_path=STEGO_CHECKPOINT_PATH,
+        checkpoint_path=stego_checkpoint_path,
         device=device,
         valid_loader=valid_loader,
     )
@@ -285,6 +334,7 @@ def main():
         print(f"Reloaded acc      : {verify_info['metrics']['acc']:.6f}")
         print(f"Reloaded loss     : {verify_info['metrics']['loss']:.6f}")
     print("=" * 80)
+
 
 if __name__ == "__main__":
     main()
