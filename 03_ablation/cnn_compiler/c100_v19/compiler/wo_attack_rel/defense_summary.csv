@@ -1,0 +1,2 @@
+model,status,asr_before,asr_after,acc_before,acc_after,robust_before,robust_after,k_star_model_percent,changed_params,total_time_sec
+c100_v19,success,99.98999834060669,1.1800000444054604,71.74000144004822,71.77000045776367,1.0099999606609344,70.37000060081482,0.0,0,36.31153714598622

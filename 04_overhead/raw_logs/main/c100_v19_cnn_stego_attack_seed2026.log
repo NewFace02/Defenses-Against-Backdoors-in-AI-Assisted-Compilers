@@ -1,0 +1,62 @@
+nohup: ignoring input
+===== CNN stego attack: C100-V19 / VGG19-CIFAR100 =====
+[+] out_dir=/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/c100_v19
+[+] device=cuda
+/home/songyq/test_ssj/cnn_stego_make_poison.py:318: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(clean_path, map_location="cpu")
+[+] load_state_dict missing=0 unexpected=0
+[+] clean_before_valid={'acc': 72.4, 'loss': 1.429645523071289, 'num_samples': 500}
+[+] clean_before_test={'acc': 73.32, 'loss': 1.3452256980895996, 'num_samples': 10000}
+[+] payload_bytes=64 payload_bits=512 stream_bits=2596
+[+] candidate tensors=14
+[1/14] skip features.0.weight: capacity 327 < 512
+[2/14] features.3.weight: status=extract_failed acc 72.4000->72.4000 shift=0.000000 bit_errors=1
+[3/14] features.7.weight: status=ok acc 72.4000->72.0000 shift=0.400000 bit_errors=0
+[4/14] features.10.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[5/14] features.14.weight: status=ok acc 72.4000->72.0000 shift=0.400000 bit_errors=0
+[6/14] features.17.weight: status=extract_failed acc 72.4000->72.4000 shift=0.000000 bit_errors=2
+[7/14] features.20.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[8/14] features.24.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[9/14] features.27.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[10/14] features.30.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[11/14] features.34.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[12/14] features.37.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[13/14] features.40.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[14/14] classifier.weight: status=ok acc 72.4000->72.4000 shift=0.000000 bit_errors=0
+[+] best target: features.27.weight acc_shift_abs=0.0 usable_bits=457106
+
+=== FINAL CNN STEGO ATTACK RESULT ===
+{
+  "model_key": "c100_v19",
+  "model_name": "C100-V19 / VGG19-CIFAR100",
+  "poison_path": "/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/c100_v19/poison_cnn_stego_best.pth",
+  "best_param_name": "features.27.weight",
+  "payload_bits": 512,
+  "stream_bits": 2596,
+  "extract_exact_match": true,
+  "bit_errors": 0,
+  "before_clean_acc": 73.32,
+  "after_clean_acc": 73.31,
+  "acc_shift": -0.009999999999990905,
+  "before_valid_acc": 72.4,
+  "after_valid_acc": 72.4,
+  "valid_acc_shift": 0.0,
+  "stego_meta": {
+    "model_key": "c100_v19",
+    "model_name": "C100-V19 / VGG19-CIFAR100",
+    "task_id": 3,
+    "clean_path": "/home/songyq/compiler_final_models/C100_V19/clean_vgg19_cifar100_best.pth",
+    "clean_sha256": "db500fdb3ff14e940bb738662ec24ffc87d0f76a3a06449067c89863d19e3ab4",
+    "param_name": "features.27.weight",
+    "payload_len_bits": 512,
+    "payload_len_bytes": 64,
+    "stream_bits": 2596,
+    "q_bits": 8,
+    "block_size": 32,
+    "n": 5,
+    "seed": 2026,
+    "attack_type": "cnn_stego"
+  }
+}
+
+[+] Saved poison checkpoint: /home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/c100_v19/poison_cnn_stego_best.pth

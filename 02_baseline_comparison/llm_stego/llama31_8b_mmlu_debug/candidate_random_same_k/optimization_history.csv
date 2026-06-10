@@ -1,0 +1,2 @@
+step,loss,lattack,lpres,ltri,selected,random_requested,random_selected,random_available,ablation_mode
+0,,,,,59331,59331,59331,59331,random_same_k

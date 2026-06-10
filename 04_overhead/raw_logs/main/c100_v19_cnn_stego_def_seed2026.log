@@ -1,0 +1,86 @@
+nohup: ignoring input
+
+===== CNN stego defense: C100-V19 / VGG19-CIFAR100 =====
+[+] out_dir=/home/songyq/test_ssj/outputs/cnn_stego_def_paper_full_seed2026/c100_v19
+[+] device=cuda
+/home/songyq/test_ssj/cnn_stego_def_paper.py:417: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(poison_path, map_location="cpu")
+[+] load_state_dict missing=0 unexpected=0
+[+] before clean test={'acc': 73.31, 'loss': 1.3452004455566406, 'num_samples': 10000}
+[+] before extract={'extract_exact_match': True, 'bit_errors': 0, 'extract_reason': 'success', 'extract_ok': True, 'payload_len': 512}
+[+] candidate tensors=14
+[1/14] features.0.weight: PAI=0.00353279 acc_shift=0.000000 writable=1674
+[2/14] features.3.weight: PAI=0.0001321 acc_shift=0.000000 writable=35712
+[3/14] features.7.weight: PAI=0.00276243 acc_shift=0.200000 writable=71424
+[4/14] features.10.weight: PAI=3.43101e-05 acc_shift=0.000000 writable=142848
+[5/14] features.14.weight: PAI=0.00552486 acc_shift=0.400000 writable=285696
+[6/14] features.17.weight: PAI=2.46546e-05 acc_shift=0.000000 writable=571392
+[7/14] features.20.weight: PAI=2.341e-05 acc_shift=0.000000 writable=571392
+[8/14] features.24.weight: PAI=2.02864e-05 acc_shift=0.000000 writable=1142784
+[9/14] features.27.weight: PAI=1.59739e-07 acc_shift=0.000000 writable=2285568
+[10/14] features.30.weight: PAI=2.0082e-06 acc_shift=0.000000 writable=2285568
+[11/14] features.34.weight: PAI=5.01734e-07 acc_shift=0.000000 writable=2285568
+[12/14] features.37.weight: PAI=5.06108e-07 acc_shift=0.000000 writable=2285568
+[13/14] features.40.weight: PAI=1.58375e-06 acc_shift=0.000000 writable=2285568
+[14/14] classifier.weight: PAI=7.1212e-05 acc_shift=0.000000 writable=49600
+
+=== FINAL CNN STEGO DEFENSE RESULT ===
+{
+  "model_key": "c100_v19",
+  "model_name": "C100-V19 / VGG19-CIFAR100",
+  "poison_path": "/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/c100_v19/poison_cnn_stego_best.pth",
+  "poison_sha256": "2adfc7bb2da07898e1a330ffb82e18776395c906e6c8c25581db6215eb42cded",
+  "defended_path": "/home/songyq/test_ssj/outputs/cnn_stego_def_paper_full_seed2026/c100_v19/defended_cnn_stego.pth",
+  "attack_type": "cnn_stego",
+  "defense_algorithm": "INSPECT-Opt-CNN-Stego-Prefix-LSB",
+  "q_bits": 8,
+  "block_size": 32,
+  "target_param_for_eval": "features.27.weight",
+  "payload_len_bits": 512,
+  "before": {
+    "clean_accuracy": 73.31,
+    "valid_clean_accuracy": 72.4,
+    "extract_exact_match": true,
+    "bit_errors": 0,
+    "extract_reason": "success",
+    "extract_ok": true,
+    "payload_len": 512
+  },
+  "after": {
+    "clean_accuracy": 73.32,
+    "valid_clean_accuracy": 72.6,
+    "extract_exact_match": false,
+    "bit_errors": 20312,
+    "extract_reason": "success",
+    "extract_ok": true,
+    "payload_len": 20568,
+    "inspect_selected": 54922,
+    "inspect_total_2d": 14761664,
+    "inspect_k_actual": 0.3720583262157979
+  },
+  "inspect_opt": {
+    "objective": "Sstego/PAI + writable mask + prefix-position purification; Delta in {-1,+1} on selected LSB positions",
+    "scan_max_batches": 5,
+    "final_max_batches": 0,
+    "probe_positions": 2048,
+    "per_tensor_edit_bits": 4096,
+    "max_tensors": 0,
+    "max_total_edit_bits": 0,
+    "position_rule": "prefix",
+    "selected_tensors": 14,
+    "selected_positions": 54922,
+    "k_star_model_percent": 0.3720583262157979
+  },
+  "timing": {
+    "total_time_sec": 37.128415456973016
+  },
+  "notes": [
+    "CNN 隐写主指标为 payload extraction：防御前 exact_match=true，防御后 exact_match=false 或 bit_errors>0。",
+    "防御不使用 stego_meta.param_name 选择目标；该字段仅用于防御前后提取验证。",
+    "候选张量通过 CNN tensor-base PAI 排序，并在 writable mask 的 prefix 位置执行 ±1 低位净化。"
+  ]
+}
+
+[+] Done. Outputs are in: /home/songyq/test_ssj/outputs/cnn_stego_def_paper_full_seed2026/c100_v19
+
+[+] All done. Summary: /home/songyq/test_ssj/outputs/cnn_stego_def_paper_full_seed2026/defense_summary.csv

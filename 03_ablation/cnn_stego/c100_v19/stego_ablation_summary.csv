@@ -1,0 +1,7 @@
+attack,model,variant,clean_acc,extract_ok,extract_exact_match,bit_errors,payload_len,payload_broken,selected_delta,k_actual_percent,source
+cnn_stego,c100_v19,No Defense,,,True,0,,False,0,0.0,outputs/cnn_stego_attack_paper_full_seed2026/c100_v19/attack_result.json
+cnn_stego,c100_v19,Random-SameK,73.31,True,True,0,512,False,96,0.0006503331873696624,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/random_same_k/c100_v19/defense_result.json
+cnn_stego,c100_v19,Random-LargeK,73.31,True,True,0,512,False,960,0.006503331873696624,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/random_large_k/c100_v19/defense_result.json
+cnn_stego,c100_v19,w/o Attack Rel.,73.32,True,True,0,512,False,0,0.0,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_attack_rel/c100_v19/defense_result.json
+cnn_stego,c100_v19,w/o Utility Sens.,73.32,True,False,20312,20568,True,96,0.0006503331873696624,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_utility_sens/c100_v19/defense_result.json
+cnn_stego,c100_v19,Full Ours,73.32,True,False,20312,20568,True,96,0.0006503331873696624,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/full_ours/c100_v19/defense_result.json

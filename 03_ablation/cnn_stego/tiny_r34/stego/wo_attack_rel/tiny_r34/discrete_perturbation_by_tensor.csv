@@ -1,0 +1,4 @@
+acc_shift_abs_probe,budget_mode,candidate_positions,changed_params,learned_sstego_score,pai,param_name,rank,tau
+0.0,learned_u,756,0,100000000.0,0.0,layer2.2.conv1.weight,0,0.35
+0.0,learned_u,756,0,100000000.0,0.0,layer2.2.conv2.weight,1,0.35
+0.0,learned_u,1024,0,100000000.0,7.63674123938074e-11,layer4.1.conv1.weight,2,0.35

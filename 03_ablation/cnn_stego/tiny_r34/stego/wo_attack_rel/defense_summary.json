@@ -1,0 +1,18 @@
+[
+  {
+    "model_key": "tiny_r34",
+    "model_name": "Tiny-R34 / ResNet34-TinyImageNet",
+    "before_clean_accuracy": 67.14,
+    "after_clean_accuracy": 67.14,
+    "before_extract_exact_match": true,
+    "after_extract_exact_match": true,
+    "before_bit_errors": 0,
+    "after_bit_errors": 0,
+    "before_extract_reason": "success",
+    "after_extract_reason": "success",
+    "inspect_selected": 0,
+    "inspect_k_actual": 0.0,
+    "target_param_for_eval": "layer4.1.conv1.weight",
+    "defended_path": "/home/songyq/test_ssj/outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/wo_attack_rel/tiny_r34/defended_cnn_stego.pth"
+  }
+]

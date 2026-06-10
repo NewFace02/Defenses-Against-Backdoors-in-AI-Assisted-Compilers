@@ -1,0 +1,25 @@
+nohup: ignoring input
+
+===== CNN compiler defense: Tiny-R34 / ResNet34-TinyImageNet =====
+[+] out_dir=/home/songyq/test_ssj/outputs/cnn_compiler_ablation_tiny_r34_seed2026/compiler_ablation_safe/full_ours_sanity/tiny_r34
+[+] poison_tar=/home/songyq/compiler_final_models/Tiny_R34/poison_resnet34_tiny_torchcl_gpu_best.tar
+[+] Loaded poisoned model; floating params=21379592; target_label=0
+[+] Before defense: ASR=99.87000226974487 clean_acc=66.28000140190125 replay_asr=99.87000226974487
+[+] INSPECT M1/module for Scomp: m_1.conv
+
+=== INSPECT-Opt Step 1A/1B: compute CNN Scomp and tensor-base PAI ===
+[+] score summary: {'scomp_tensors': 1, 'sstego_tensors': 37, 'pai_tensors': 37, 'max_batches': 5}
+[+] auto compiler budget: {'auto_budget_enabled': True, 'scomp_scope': 1728, 'stego_tensor_count': 37, 'auto_scomp_param_ratio': 0.12, 'auto_stego_tensor_ratio': 0.024, 'auto_scomp_budget': 207, 'auto_stego_per_tensor': 41, 'effective_max_opt_positions': 4140}
+[+] balanced Ccomp∪Cstego union candidate tensors: 37
+
+=== INSPECT-Opt Step 2/3/4: build UNION set, optimize u, discretize Delta ===
+Traceback (most recent call last):
+  File "/home/songyq/test_ssj/cnn_compiler_def_paper_ablation_safe.py", line 1233, in <module>
+    main()
+  File "/home/songyq/test_ssj/cnn_compiler_def_paper_ablation_safe.py", line 1207, in main
+    all_results.append(run_one(args, spec))
+  File "/home/songyq/test_ssj/cnn_compiler_def_paper_ablation_safe.py", line 987, in run_one
+    stat, param_df, tensor_df = apply_inspect_opt_with_tables(
+  File "/home/songyq/test_ssj/cnn_compiler_def_paper_ablation_safe.py", line 614, in apply_inspect_opt_with_tables
+    plan, total = _build_continuous_u_plan(
+TypeError: _build_continuous_u_plan() got an unexpected keyword argument 'use_writable_mask'

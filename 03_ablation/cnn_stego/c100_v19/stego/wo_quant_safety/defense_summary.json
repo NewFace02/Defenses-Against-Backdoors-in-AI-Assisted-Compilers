@@ -1,0 +1,18 @@
+[
+  {
+    "model_key": "c100_v19",
+    "model_name": "C100-V19 / VGG19-CIFAR100",
+    "before_clean_accuracy": 73.31,
+    "after_clean_accuracy": 73.32,
+    "before_extract_exact_match": true,
+    "after_extract_exact_match": false,
+    "before_bit_errors": 0,
+    "after_bit_errors": 20312,
+    "before_extract_reason": "success",
+    "after_extract_reason": "success",
+    "inspect_selected": 2972,
+    "inspect_k_actual": 0.020133231592319133,
+    "target_param_for_eval": "features.27.weight",
+    "defended_path": "/home/songyq/test_ssj/outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_quant_safety/c100_v19/defended_cnn_stego.pth"
+  }
+]

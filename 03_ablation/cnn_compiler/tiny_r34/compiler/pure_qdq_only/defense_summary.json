@@ -1,0 +1,15 @@
+[
+  {
+    "model": "tiny_r34",
+    "status": "success",
+    "asr_before": 99.87000226974487,
+    "asr_after": 51.889997720718384,
+    "acc_before": 66.28000140190125,
+    "acc_after": 66.32000207901001,
+    "robust_before": 0.6300000008195639,
+    "robust_after": 41.24000072479248,
+    "k_star_model_percent": 0.0,
+    "changed_params": 0,
+    "total_time_sec": 161.14768962806556
+  }
+]

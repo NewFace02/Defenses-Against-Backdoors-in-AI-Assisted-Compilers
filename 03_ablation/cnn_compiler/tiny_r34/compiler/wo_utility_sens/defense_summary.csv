@@ -1,0 +1,2 @@
+model,status,asr_before,asr_after,acc_before,acc_after,robust_before,robust_after,k_star_model_percent,changed_params,total_time_sec
+tiny_r34,success,99.87000226974487,2.710000053048134,66.28000140190125,66.25000238418579,0.6300000008195639,66.03999733924866,0.007769091196875974,1661,159.40096868493129

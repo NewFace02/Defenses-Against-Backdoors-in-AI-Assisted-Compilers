@@ -1,0 +1,2 @@
+tensor_name,layer_name,real_param_count,balanced_scomp_positions,balanced_sstego_positions,balanced_total_positions,balanced_scope_percent,raw_pai,is_scomp_tensor
+m_1.conv.weight,m_1.conv,1728,207,41,248,14.351851851851851,0.23656821250915527,1

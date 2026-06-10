@@ -1,0 +1,2 @@
+score_kind,score_numel,score_mean,score_max,score_min,score_positive,tensor_name,layer_name,pai
+tensor,1728,4.227109909057617,4.227110385894775,4.227110385894775,1728,m_1.conv.weight,m_1.conv,0.23656821250915527

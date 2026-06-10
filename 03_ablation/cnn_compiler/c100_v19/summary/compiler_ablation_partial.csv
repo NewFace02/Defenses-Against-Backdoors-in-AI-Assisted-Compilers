@@ -1,0 +1,4 @@
+attack,model,variant,clean_acc,asr,robust_acc,selected_delta,k_actual_percent,lambda_a,lambda_p,source
+cnn_compiler,c100_v19,No Defense,71.74000144004822,99.98999834060669,1.0099999606609344,0,0.0,,,outputs/cnn_compiler_def_paper_full_seed2026_balanced_union_auto/c100_v19/defense_result.json
+cnn_compiler,c100_v19,QDQ-only / Zero-Delta,71.77000045776367,1.1800000444054604,70.37000060081482,0,0.0,0.0,1.0,outputs/cnn_compiler_ablation_c100_v19_seed2026/compiler/qdq_only_zero_delta/c100_v19/defense_result.json
+cnn_compiler,c100_v19,Full Ours,71.74999713897705,1.2400000356137753,70.49000263214111,234,0.0015838168035652936,1.0,1.0,outputs/cnn_compiler_def_paper_full_seed2026_balanced_union_auto/c100_v19/defense_result.json

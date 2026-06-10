@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd ~/test_myx
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate saser-chatglm3
+
+export CUDA_VISIBLE_DEVICES=1
+export PYTHONUNBUFFERED=1
+export TOKENIZERS_PARALLELISM=false
+
+export HF_HOME=/dev/shm/hf_home_runtime
+export HF_DATASETS_CACHE=/dev/shm/hf_home_runtime/datasets
+export HF_DATASETS_OFFLINE=1
+unset HF_ENDPOINT
+
+MODEL_PATH="$HOME/test_myx/models/qwen3-8b"
+ATTACK_JSON="$HOME/test_myx/outputs/qwen3_attack_mmlu_debug_seed2026/attack_result.json"
+PAI_CSV="$HOME/test_myx/outputs/qwen3_def_mmlu_debug2_seed2026/inspect_llm_stego_pai.csv"
+BASE_OUT="$HOME/test_ssj/llm_ablation/outputs/qwen3_mmlu_debug_ablation_seed2026"
+
+SUBJECTS="abstract_algebra,computer_security,high_school_mathematics,logical_fallacies"
+
+COMMON_ARGS=(
+  --model-path "$MODEL_PATH"
+  --attack-result-json "$ATTACK_JSON"
+  --eval-dataset mmlu
+  --mmlu-subjects "$SUBJECTS"
+  --mmlu-split test
+  --max-calib 40
+  --max-eval 200
+  --calib-ratio 0.1
+  --q-bits 4
+  --stego-pai-source csv
+  --target-search-csv "$PAI_CSV"
+  --candidate-layers union
+  --comp-top-hidden-dims 1
+  --max-scan-layers 36
+  --opt-steps 30
+  --opt-calib-limit 32
+  --opt-calib-batch 1
+  --lr 0.05
+  --lambda-t 0.01
+  --tau 0.5
+  --seed 2026
+  --device-map none
+)
+
+echo "===== Qwen3 direct debug ablations on GPU1 ====="
+echo "ATTACK_JSON=$ATTACK_JSON"
+echo "PAI_CSV=$PAI_CSV"
+echo "BASE_OUT=$BASE_OUT"
+
+echo
+echo "===== 1/4 Scomp-only ====="
+python -u qwen3_def_paper_safe.py \
+  "${COMMON_ARGS[@]}" \
+  --comp-top-layers 1 \
+  --stego-top-layers 0 \
+  --lambda-a 1.0 \
+  --lambda-p 1.0 \
+  --lambda-w 0.0001 \
+  --out-dir "$BASE_OUT/scomp_only"
+
+echo
+echo "===== 2/4 Sstego-only ====="
+python -u qwen3_def_paper_safe.py \
+  "${COMMON_ARGS[@]}" \
+  --comp-top-layers 0 \
+  --stego-top-layers 1 \
+  --lambda-a 1.0 \
+  --lambda-p 1.0 \
+  --lambda-w 0.0001 \
+  --out-dir "$BASE_OUT/sstego_only"
+
+echo
+echo "===== 3/4 w/o Attack Rel. ====="
+python -u qwen3_def_paper_safe.py \
+  "${COMMON_ARGS[@]}" \
+  --comp-top-layers 1 \
+  --stego-top-layers 1 \
+  --lambda-a 0.0 \
+  --lambda-p 1.0 \
+  --lambda-w 0.0001 \
+  --out-dir "$BASE_OUT/wo_attack_rel"
+
+echo
+echo "===== 4/4 w/o Utility Sens. ====="
+python -u qwen3_def_paper_safe.py \
+  "${COMMON_ARGS[@]}" \
+  --comp-top-layers 1 \
+  --stego-top-layers 1 \
+  --lambda-a 1.0 \
+  --lambda-p 0.0 \
+  --lambda-w 0.0 \
+  --out-dir "$BASE_OUT/wo_utility_sens"
+
+echo
+echo "===== quick direct summary ====="
+python - <<'PY'
+import json
+from pathlib import Path
+
+paths = {
+    "Full Ours debug2": Path("/home/songyq/test_myx/outputs/qwen3_def_mmlu_debug2_seed2026/defense_result.json"),
+    "Scomp-only": Path("/home/songyq/test_ssj/llm_ablation/outputs/qwen3_mmlu_debug_ablation_seed2026/scomp_only/defense_result.json"),
+    "Sstego-only": Path("/home/songyq/test_ssj/llm_ablation/outputs/qwen3_mmlu_debug_ablation_seed2026/sstego_only/defense_result.json"),
+    "w/o Attack Rel.": Path("/home/songyq/test_ssj/llm_ablation/outputs/qwen3_mmlu_debug_ablation_seed2026/wo_attack_rel/defense_result.json"),
+    "w/o Utility Sens.": Path("/home/songyq/test_ssj/llm_ablation/outputs/qwen3_mmlu_debug_ablation_seed2026/wo_utility_sens/defense_result.json"),
+}
+
+for name, p in paths.items():
+    print("\n" + "="*100)
+    print(name, p)
+    if not p.exists():
+        print("[MISS]")
+        continue
+    d=json.load(open(p, "r", encoding="utf-8"))
+    opt=d.get("inspect_opt", {})
+    b=d.get("before_defense", {})
+    a=d.get("after_defense", {})
+    print("candidate_layers:", d.get("candidate_layers"))
+    print("comp_selected_layers:", d.get("comp_selected_layers"))
+    print("stego_selected_layers:", d.get("stego_selected_layers"))
+    print("before_asr:", b.get("asr_percent"))
+    print("after_asr:", a.get("asr_percent"))
+    print("before_ber:", b.get("ber_percent"))
+    print("after_ber:", a.get("ber_percent"))
+    print("before_match:", b.get("byte_match_percent"))
+    print("after_match:", a.get("byte_match_percent"))
+    print("before_acc:", b.get("acc_percent"))
+    print("after_acc:", a.get("acc_percent"))
+    print("before_ppl:", b.get("ppl"))
+    print("after_ppl:", a.get("ppl"))
+    print("changed_params:", opt.get("changed_params"))
+    print("k_model_percent:", opt.get("k_star_model_percent"))
+    print("lambda_a:", opt.get("lambda_a"))
+    print("lambda_p:", opt.get("lambda_p"))
+    print("lambda_w:", opt.get("lambda_w"))
+PY
+
+echo
+echo "===== Qwen3 direct debug ablations done ====="

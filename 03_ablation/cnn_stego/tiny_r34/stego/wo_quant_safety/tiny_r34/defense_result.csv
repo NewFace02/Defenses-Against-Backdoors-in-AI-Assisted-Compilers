@@ -1,0 +1,2 @@
+model_key,model_name,before_clean_accuracy,after_clean_accuracy,before_extract_exact_match,after_extract_exact_match,before_bit_errors,after_bit_errors,before_extract_reason,after_extract_reason,inspect_selected,inspect_k_actual,target_param_for_eval,defended_path
+tiny_r34,Tiny-R34 / ResNet34-TinyImageNet,67.14,67.14,True,False,0,,success,invalid_n,2560,0.011983690197641011,layer4.1.conv1.weight,/home/songyq/test_ssj/outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/wo_quant_safety/tiny_r34/defended_cnn_stego.pth

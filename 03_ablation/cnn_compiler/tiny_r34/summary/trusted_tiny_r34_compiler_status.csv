@@ -1,0 +1,4 @@
+attack,model,variant,clean_acc,asr,robust_acc,selected_delta,k_actual_percent,optimized_candidates,effective_max,source
+cnn_compiler,ResNet34-TinyImageNet,No Defense,66.28000140190125,99.87000226974487,0.6300000008195639,0,0.0,784,820,outputs/cnn_compiler_ablation_tiny_r34_seed2026/compiler/full_ours_verify_recovered/tiny_r34/defense_result.json
+cnn_compiler,ResNet34-TinyImageNet,Full Ours-compact,66.22999906539917,2.710000053048134,66.06000065803528,784,0.003667048463787335,784,820,outputs/cnn_compiler_ablation_tiny_r34_seed2026/compiler/full_ours_verify_recovered/tiny_r34/defense_result.json
+cnn_compiler,ResNet34-TinyImageNet,Original Full Ours,66.25000238418579,2.710000053048134,66.03999733924866,1661,0.007769091196875974,1661,4140,outputs/cnn_compiler_def_paper_full_seed2026_balanced_union_auto/tiny_r34/defense_result.json

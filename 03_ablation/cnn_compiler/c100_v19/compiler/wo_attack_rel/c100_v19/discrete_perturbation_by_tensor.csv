@@ -1,0 +1,2 @@
+tensor_name,real_param_count,optimized_positions,changed_params,changed_scope_percent
+m_1.conv.weight,1728,247,0,0.0

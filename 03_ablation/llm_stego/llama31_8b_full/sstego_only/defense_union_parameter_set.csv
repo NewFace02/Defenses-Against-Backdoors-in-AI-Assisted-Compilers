@@ -1,0 +1,2 @@
+layer,global_name,scope_params,comp_positions,stego_positions,union_positions,selected_by_comp,selected_by_stego,raw_stego_layer,norm_stego_layer
+11,model.layers.11.self_attn.q_proj.weight,16777216,0,1604,1604,0,1,45376.67777341922,1.0

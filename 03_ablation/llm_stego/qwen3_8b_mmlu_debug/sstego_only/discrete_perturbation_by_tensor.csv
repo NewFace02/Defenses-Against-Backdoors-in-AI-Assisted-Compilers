@@ -1,0 +1,2 @@
+global_name,selected_by_comp,selected_by_stego,scope_params,optimized_positions,changed,k_scope_percent
+model.layers.6.self_attn.q_proj.weight,0,1,16777216,1484,1484,0.008845329284667969

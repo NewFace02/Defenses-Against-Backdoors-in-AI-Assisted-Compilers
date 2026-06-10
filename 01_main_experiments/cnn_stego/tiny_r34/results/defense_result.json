@@ -1,0 +1,128 @@
+{
+  "model_key": "tiny_r34",
+  "model_name": "Tiny-R34 / ResNet34-TinyImageNet",
+  "poison_path": "/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/tiny_r34/poison_cnn_stego_best.pth",
+  "poison_sha256": "209cff1cf5c56739e90c07643c6b0c0f6d9cb0a3f7942b19b598b644a0b956a0",
+  "defended_path": "/home/songyq/test_ssj/outputs/cnn_stego_def_paper_full_seed2026_learned_u_sparse/tiny_r34/defended_cnn_stego.pth",
+  "attack_type": "cnn_stego",
+  "defense_algorithm": "INSPECT-Opt-CNN-Stego-Prefix-LSB",
+  "q_bits": 8,
+  "block_size": 32,
+  "target_param_for_eval": "layer4.1.conv1.weight",
+  "payload_len_bits": 512,
+  "before": {
+    "clean_accuracy": 67.14,
+    "valid_clean_accuracy": 69.0,
+    "extract_exact_match": true,
+    "bit_errors": 0,
+    "extract_reason": "success",
+    "extract_ok": true,
+    "payload_len": 512
+  },
+  "after": {
+    "clean_accuracy": 67.14,
+    "valid_clean_accuracy": 69.0,
+    "extract_exact_match": false,
+    "bit_errors": null,
+    "extract_reason": "invalid_n",
+    "extract_ok": false,
+    "payload_len": null,
+    "inspect_selected": 288,
+    "inspect_total_2d": 21362368,
+    "inspect_k_actual": 0.0013481651472346137
+  },
+  "inspect_opt": {
+    "objective": "Sstego/PAI + writable mask + prefix-position purification; Delta in {-1,+1} on selected LSB positions",
+    "scan_max_batches": 5,
+    "final_max_batches": 0,
+    "probe_positions": 2048,
+    "per_tensor_edit_bits": 4096,
+    "max_tensors": 0,
+    "max_total_edit_bits": 0,
+    "position_rule": "prefix",
+    "budget_mode": "learned_u",
+    "pai_floor": 1e-08,
+    "auto_score_ratio": 0.25,
+    "auto_max_tensors": 8,
+    "prefix_header_multiplier": 4,
+    "learned_u": {
+      "budget_mode": "learned_u",
+      "candidate_positions": 2536,
+      "selected_tensors": 3,
+      "selected_positions": 288,
+      "tau": 0.5,
+      "steps": 80,
+      "best_loss": -5.580617904663086,
+      "history_tail": [
+        {
+          "step": 76,
+          "loss": -5.400847434997559,
+          "loss_attack": -38.374664306640625,
+          "loss_sparse": 32.97380447387695,
+          "loss_pres": 7.63674193327013e-11,
+          "loss_tri": 0.00015796307707205415,
+          "loss_weight": 0.11089804023504257,
+          "selected_now": 288
+        },
+        {
+          "step": 77,
+          "loss": -5.360934257507324,
+          "loss_attack": -38.4139518737793,
+          "loss_sparse": 33.05300521850586,
+          "loss_pres": 7.63674193327013e-11,
+          "loss_tri": 0.00015776627697050571,
+          "loss_weight": 0.11093813925981522,
+          "selected_now": 288
+        },
+        {
+          "step": 78,
+          "loss": -5.2640180587768555,
+          "loss_attack": -38.474754333496094,
+          "loss_sparse": 33.210723876953125,
+          "loss_pres": 7.63674193327013e-11,
+          "loss_tri": 0.0001639870461076498,
+          "loss_weight": 0.11098350584506989,
+          "selected_now": 288
+        },
+        {
+          "step": 79,
+          "loss": -5.293032646179199,
+          "loss_attack": -38.435943603515625,
+          "loss_sparse": 33.14289855957031,
+          "loss_pres": 7.63674193327013e-11,
+          "loss_tri": 0.0001519270590506494,
+          "loss_weight": 0.11100950092077255,
+          "selected_now": 288
+        },
+        {
+          "step": 80,
+          "loss": -5.49661922454834,
+          "loss_attack": -38.33516311645508,
+          "loss_sparse": 32.838531494140625,
+          "loss_pres": 7.63674193327013e-11,
+          "loss_tri": 0.00013408133236225694,
+          "loss_weight": 0.11102867871522903,
+          "selected_now": 288
+        }
+      ]
+    },
+    "learned_steps": 80,
+    "learned_tau": 0.5,
+    "learned_lambda_a": 8.0,
+    "learned_lambda_s": 5.5,
+    "learned_pool_sqrt_scale": 2.0,
+    "learned_max_pool_per_tensor": 1024,
+    "learned_max_total_candidates": 8192,
+    "selected_tensors": 3,
+    "selected_positions": 288,
+    "k_star_model_percent": 0.0013481651472346137
+  },
+  "timing": {
+    "total_time_sec": 119.5918900910765
+  },
+  "notes": [
+    "CNN 隐写主指标为 payload extraction：防御前 exact_match=true，防御后 exact_match=false 或 bit_errors>0。",
+    "防御不使用 stego_meta.param_name 选择目标；该字段仅用于防御前后提取验证。",
+    "候选张量通过 CNN tensor-base PAI 排序，并在 writable mask 的 prefix 位置执行 ±1 低位净化。"
+  ]
+}

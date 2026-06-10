@@ -1,0 +1,15 @@
+[
+  {
+    "model": "c100_v19",
+    "status": "success",
+    "asr_before": 99.98999834060669,
+    "asr_after": 1.0700000450015068,
+    "acc_before": 71.74000144004822,
+    "acc_after": 71.78000211715698,
+    "robust_before": 1.0099999606609344,
+    "robust_after": 70.74000239372253,
+    "k_star_model_percent": 0.0016718066259855874,
+    "changed_params": 247,
+    "total_time_sec": 36.95679878687952
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "model_path": "/home/songyq/test_myx/models/qwen3-8b",
+  "dataset_meta": {
+    "eval_dataset": "mmlu",
+    "calib_ratio": 0.1,
+    "mmlu_subjects": "abstract_algebra,computer_security,high_school_mathematics,logical_fallacies",
+    "mmlu_split": "test",
+    "mmlu_total": 633,
+    "total_tasks": 633,
+    "calib_tasks": 40,
+    "eval_tasks": 200,
+    "max_calib": 40,
+    "max_eval": 200
+  },
+  "eval_dataset": "mmlu",
+  "eval_num_tasks": 200,
+  "calib_num_tasks": 40,
+  "attack_result_json": "/home/songyq/test_myx/outputs/qwen3_attack_mmlu_debug_seed2026/attack_result.json",
+  "q_bits": 4,
+  "n": 1,
+  "attack_target_layer": 6,
+  "candidate_layers": [
+    6,
+    32
+  ],
+  "comp_selected_layers": [
+    32
+  ],
+  "stego_selected_layers": [
+    6
+  ],
+  "defense_scope": "union_of_scomp_and_sstego_parameter_sets",
+  "candidate_layer_rule": "union_of_scomp_and_sstego",
+  "comp_top_layers": 1,
+  "stego_top_layers": 1,
+  "comp_top_hidden_dims": 1,
+  "payload_position_prior": false,
+  "payload_len_bytes": 36,
+  "payload_sha256": "bf4952869861c324a1ebe916dcf4b01cd8d04311be5b80a9707f49c1c3baf3ad",
+  "before_defense": {
+    "found_trigger": true,
+    "asr_percent": 100.0,
+    "ber_percent": 0.0,
+    "byte_match_percent": 100.0,
+    "extracted_sha256": "bf4952869861c324a1ebe916dcf4b01cd8d04311be5b80a9707f49c1c3baf3ad",
+    "ppl": 6.689407868787487,
+    "acc_percent": 69.5
+  },
+  "after_defense": {
+    "found_trigger": true,
+    "asr_percent": 0.0,
+    "ber_percent": 47.916666666666664,
+    "byte_match_percent": 2.7777777777777777,
+    "extracted_sha256": "5632109421256d9d07cd286a4ae085c64aba43deb4f139e93a17dd5db453f3e0",
+    "ppl": 6.699328074763952,
+    "acc_percent": 69.5,
+    "d_ppl_vs_predefense": 0.0014807762608065123,
+    "d_acc_vs_predefense": 0.0,
+    "pai_vs_predefense": 0.0014807762608065123,
+    "sr_percent_vs_predefense": 99.85192237391935
+  },
+  "inspect_opt": {
+    "objective": "-lambda_a*sum|u|[Norm(Scomp)+Norm(Sstego)] + lambda_p*(logitMSE + lambda_w*weightMSE) + lambda_t*sum u^2(1-u^2)^2",
+    "lambda_a": 1.0,
+    "lambda_p": 0.0,
+    "lambda_w": 0.0,
+    "lambda_t": 0.01,
+    "tau": 0.5,
+    "opt_steps": 30,
+    "lr": 0.05,
+    "scope_total_params": 209715200,
+    "optimized_positions": 53362,
+    "changed_params": 53362,
+    "k_star_scope": 0.00025444984436035156,
+    "model_total_2d_params": 8190427136,
+    "k_star_scope_percent": 0.025444984436035156,
+    "k_star_model_percent": 0.0006515166927675113
+  }
+}

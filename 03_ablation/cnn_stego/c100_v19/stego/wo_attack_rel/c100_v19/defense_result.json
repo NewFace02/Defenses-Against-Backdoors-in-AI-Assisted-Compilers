@@ -1,0 +1,128 @@
+{
+  "model_key": "c100_v19",
+  "model_name": "C100-V19 / VGG19-CIFAR100",
+  "poison_path": "/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/c100_v19/poison_cnn_stego_best.pth",
+  "poison_sha256": "2adfc7bb2da07898e1a330ffb82e18776395c906e6c8c25581db6215eb42cded",
+  "defended_path": "outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_attack_rel/c100_v19/defended_cnn_stego.pth",
+  "attack_type": "cnn_stego",
+  "defense_algorithm": "INSPECT-Opt-CNN-Stego-Prefix-LSB",
+  "q_bits": 8,
+  "block_size": 32,
+  "target_param_for_eval": "features.27.weight",
+  "payload_len_bits": 512,
+  "before": {
+    "clean_accuracy": 73.31,
+    "valid_clean_accuracy": 72.4,
+    "extract_exact_match": true,
+    "bit_errors": 0,
+    "extract_reason": "success",
+    "extract_ok": true,
+    "payload_len": 512
+  },
+  "after": {
+    "clean_accuracy": 73.32,
+    "valid_clean_accuracy": 72.4,
+    "extract_exact_match": true,
+    "bit_errors": 0,
+    "extract_reason": "success",
+    "extract_ok": true,
+    "payload_len": 512,
+    "inspect_selected": 0,
+    "inspect_total_2d": 14761664,
+    "inspect_k_actual": 0.0
+  },
+  "inspect_opt": {
+    "objective": "Sstego/PAI + writable mask + prefix-position purification; Delta in {-1,+1} on selected LSB positions",
+    "scan_max_batches": 5,
+    "final_max_batches": 0,
+    "probe_positions": 2048,
+    "per_tensor_edit_bits": 4096,
+    "max_tensors": 0,
+    "max_total_edit_bits": 0,
+    "position_rule": "prefix",
+    "budget_mode": "learned_u",
+    "pai_floor": 1e-08,
+    "auto_score_ratio": 0.25,
+    "auto_max_tensors": 8,
+    "prefix_header_multiplier": 4,
+    "learned_u": {
+      "budget_mode": "learned_u",
+      "candidate_positions": 2941,
+      "selected_tensors": 3,
+      "selected_positions": 0,
+      "tau": 0.5,
+      "steps": 80,
+      "best_loss": 1.6110020875930786,
+      "history_tail": [
+        {
+          "step": 76,
+          "loss": 2.2977168560028076,
+          "loss_attack": -0.0,
+          "loss_sparse": 2.297714948654175,
+          "loss_pres": 9.700873988549574e-07,
+          "loss_tri": 0.00010312890663044527,
+          "loss_weight": 0.00010319288412574679,
+          "selected_now": 0
+        },
+        {
+          "step": 77,
+          "loss": 2.366556406021118,
+          "loss_attack": -0.0,
+          "loss_sparse": 2.3665544986724854,
+          "loss_pres": 9.69658344729396e-07,
+          "loss_tri": 0.00010403036139905453,
+          "loss_weight": 0.0001040882634697482,
+          "selected_now": 0
+        },
+        {
+          "step": 78,
+          "loss": 2.5565783977508545,
+          "loss_attack": -0.0,
+          "loss_sparse": 2.5565762519836426,
+          "loss_pres": 9.705551065053442e-07,
+          "loss_tri": 0.0001124507180065848,
+          "loss_weight": 0.00011251847172388807,
+          "selected_now": 0
+        },
+        {
+          "step": 79,
+          "loss": 2.4621169567108154,
+          "loss_attack": -0.0,
+          "loss_sparse": 2.4621150493621826,
+          "loss_pres": 9.704691592560266e-07,
+          "loss_tri": 0.0001006353777484037,
+          "loss_weight": 0.0001006869861157611,
+          "selected_now": 0
+        },
+        {
+          "step": 80,
+          "loss": 2.096773624420166,
+          "loss_attack": -0.0,
+          "loss_sparse": 2.0967719554901123,
+          "loss_pres": 9.708473953651264e-07,
+          "loss_tri": 8.293259452329949e-05,
+          "loss_weight": 8.29764612717554e-05,
+          "selected_now": 0
+        }
+      ]
+    },
+    "learned_steps": 80,
+    "learned_tau": 0.5,
+    "learned_lambda_a": 0.0,
+    "learned_lambda_s": 5.5,
+    "learned_pool_sqrt_scale": 2.0,
+    "learned_max_pool_per_tensor": 1024,
+    "learned_max_total_candidates": 8192,
+    "selected_tensors": 3,
+    "selected_positions": 0,
+    "k_star_model_percent": 0.0
+  },
+  "timing": {
+    "total_time_sec": 38.48115455103107
+  },
+  "notes": [
+    "CNN 隐写主指标为 payload extraction：防御前 exact_match=true，防御后 exact_match=false 或 bit_errors>0。",
+    "防御不使用 stego_meta.param_name 选择目标；该字段仅用于防御前后提取验证。",
+    "候选张量通过 CNN tensor-base PAI 排序，并在 writable mask 的 prefix 位置执行 ±1 低位净化。"
+  ]
+}

@@ -1,0 +1,85 @@
+nohup: ignoring input
+===== CNN stego attack: Tiny-R34 / ResNet34-TinyImageNet =====
+[+] out_dir=/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/tiny_r34
+[+] device=cuda
+/home/songyq/test_ssj/cnn_stego_make_poison.py:318: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(clean_path, map_location="cpu")
+[+] load_state_dict missing=0 unexpected=0
+[+] clean_before_valid={'acc': 69.0, 'loss': 1.421037139892578, 'num_samples': 500}
+[+] clean_before_test={'acc': 67.12, 'loss': 1.4446903964996338, 'num_samples': 10000}
+[+] payload_bytes=64 payload_bits=512 stream_bits=2596
+[+] candidate tensors=37
+[1/37] skip conv1.weight: capacity 327 < 512
+[2/37] layer1.0.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[3/37] layer1.0.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[4/37] layer1.1.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[5/37] layer1.1.conv2.weight: status=extract_failed acc 69.0000->69.0000 shift=0.000000 bit_errors=2
+[6/37] layer1.2.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[7/37] layer1.2.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[8/37] layer2.0.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[9/37] layer2.0.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[10/37] layer2.0.shortcut.0.weight: status=ok acc 69.0000->69.2000 shift=0.200000 bit_errors=0
+[11/37] layer2.1.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[12/37] layer2.1.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[13/37] layer2.2.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[14/37] layer2.2.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[15/37] layer2.3.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[16/37] layer2.3.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[17/37] layer3.0.conv1.weight: status=extract_failed acc 69.0000->69.0000 shift=0.000000 bit_errors=5
+[18/37] layer3.0.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[19/37] layer3.0.shortcut.0.weight: status=ok acc 69.0000->69.2000 shift=0.200000 bit_errors=0
+[20/37] layer3.1.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[21/37] layer3.1.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[22/37] layer3.2.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[23/37] layer3.2.conv2.weight: status=extract_failed acc 69.0000->69.0000 shift=0.000000 bit_errors=1
+[24/37] layer3.3.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[25/37] layer3.3.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[26/37] layer3.4.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[27/37] layer3.4.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[28/37] layer3.5.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[29/37] layer3.5.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[30/37] layer4.0.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[31/37] layer4.0.conv2.weight: status=extract_failed acc 69.0000->69.0000 shift=0.000000 bit_errors=3
+[32/37] layer4.0.shortcut.0.weight: status=ok acc 69.0000->69.2000 shift=0.200000 bit_errors=0
+[33/37] layer4.1.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[34/37] layer4.1.conv2.weight: status=extract_failed acc 69.0000->69.0000 shift=0.000000 bit_errors=3
+[35/37] layer4.2.conv1.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[36/37] layer4.2.conv2.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[37/37] linear.weight: status=ok acc 69.0000->69.0000 shift=0.000000 bit_errors=0
+[+] best target: layer4.1.conv1.weight acc_shift_abs=0.0 usable_bits=457106
+
+=== FINAL CNN STEGO ATTACK RESULT ===
+{
+  "model_key": "tiny_r34",
+  "model_name": "Tiny-R34 / ResNet34-TinyImageNet",
+  "poison_path": "/home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/tiny_r34/poison_cnn_stego_best.pth",
+  "best_param_name": "layer4.1.conv1.weight",
+  "payload_bits": 512,
+  "stream_bits": 2596,
+  "extract_exact_match": true,
+  "bit_errors": 0,
+  "before_clean_acc": 67.12,
+  "after_clean_acc": 67.14,
+  "acc_shift": 0.01999999999999602,
+  "before_valid_acc": 69.0,
+  "after_valid_acc": 69.0,
+  "valid_acc_shift": 0.0,
+  "stego_meta": {
+    "model_key": "tiny_r34",
+    "model_name": "Tiny-R34 / ResNet34-TinyImageNet",
+    "task_id": 4,
+    "clean_path": "/home/songyq/compiler_final_models/Tiny_R34/clean_resnet34_tiny_best.pth",
+    "clean_sha256": "98f16d0360297934d8c65cf48a986afb2659dc73c41af9450fe9e0516ba91482",
+    "param_name": "layer4.1.conv1.weight",
+    "payload_len_bits": 512,
+    "payload_len_bytes": 64,
+    "stream_bits": 2596,
+    "q_bits": 8,
+    "block_size": 32,
+    "n": 5,
+    "seed": 2026,
+    "attack_type": "cnn_stego"
+  }
+}
+
+[+] Saved poison checkpoint: /home/songyq/test_ssj/outputs/cnn_stego_attack_paper_full_seed2026/tiny_r34/poison_cnn_stego_best.pth

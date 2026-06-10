@@ -1,0 +1,13 @@
+attack,model,variant,after_acc,selected_delta,k_actual_percent,after_exact_match,after_bit_errors,disable_writable_mask,source
+cnn_stego,C100-V19,Full Ours,73.32,96,0.0006503331873696624,False,20312,,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/full_ours/c100_v19/defense_result.json
+cnn_stego,C100-V19,Random-SameK,73.31,96,0.0006503331873696624,True,0,,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/random_same_k/c100_v19/defense_result.json
+cnn_stego,C100-V19,Random-LargeK,73.31,960,0.006503331873696624,True,0,,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/random_large_k/c100_v19/defense_result.json
+cnn_stego,C100-V19,w/o Attack Rel.,73.32,0,0.0,True,0,,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_attack_rel/c100_v19/defense_result.json
+cnn_stego,C100-V19,w/o Utility Sens.,73.32,96,0.0006503331873696624,False,20312,,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_utility_sens/c100_v19/defense_result.json
+cnn_stego,C100-V19,w/o Quant-Safety,73.32,2972,0.020133231592319133,False,20312,True,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_quant_safety/c100_v19/defense_result.json
+cnn_stego,Tiny-R34,Full Ours,67.14,288,0.0013481651472346137,False,,,outputs/cnn_stego_def_paper_full_seed2026_learned_u_sparse/tiny_r34/defense_result.json
+cnn_stego,Tiny-R34,Random-SameK,67.14,288,0.0013481651472346137,True,0,,outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/random_same_k/tiny_r34/defense_result.json
+cnn_stego,Tiny-R34,Random-LargeK,67.14,2880,0.013481651472346137,True,0,,outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/random_large_k/tiny_r34/defense_result.json
+cnn_stego,Tiny-R34,w/o Attack Rel.,67.14,0,0.0,True,0,,outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/wo_attack_rel/tiny_r34/defense_result.json
+cnn_stego,Tiny-R34,w/o Utility Sens.,67.14,2536,0.011871343102038126,False,,,outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/wo_utility_sens/tiny_r34/defense_result.json
+cnn_stego,Tiny-R34,w/o Quant-Safety,67.14,2560,0.011983690197641011,False,,True,outputs/cnn_stego_ablation_tiny_r34_seed2026/stego/wo_quant_safety/tiny_r34/defense_result.json

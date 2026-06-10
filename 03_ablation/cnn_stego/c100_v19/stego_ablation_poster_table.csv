@@ -1,0 +1,7 @@
+Variant,Clean ACC (%),Payload Exact Match,Bit Errors,Payload Status,Perturb Ratio (%),Selected Params
+No Defense,,True,0,Attack succeeds,0.0,0
+Random-SameK,73.31,True,0,Not blocked,0.0006503331873696,96
+Random-LargeK,73.31,True,0,Not blocked,0.0065033318736966,960
+w/o Attack Rel.,73.32,True,0,Not blocked,0.0,0
+w/o Utility Sens.,73.32,False,20312,Blocked,0.0006503331873696,96
+Full Ours,73.32,False,20312,Blocked,0.0006503331873696,96

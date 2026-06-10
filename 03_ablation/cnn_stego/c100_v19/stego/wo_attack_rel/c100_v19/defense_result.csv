@@ -1,0 +1,2 @@
+model_key,model_name,before_clean_accuracy,after_clean_accuracy,before_extract_exact_match,after_extract_exact_match,before_bit_errors,after_bit_errors,before_extract_reason,after_extract_reason,inspect_selected,inspect_k_actual,target_param_for_eval,defended_path
+c100_v19,C100-V19 / VGG19-CIFAR100,73.31,73.32,True,True,0,0,success,success,0,0.0,features.27.weight,outputs/cnn_stego_ablation_c100_v19_seed2026/stego/wo_attack_rel/c100_v19/defended_cnn_stego.pth
