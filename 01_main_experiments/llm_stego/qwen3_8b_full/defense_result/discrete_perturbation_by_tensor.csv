@@ -1,0 +1,9 @@
+global_name,selected_by_comp,selected_by_stego,scope_params,optimized_positions,changed,k_scope_percent
+model.layers.17.self_attn.q_proj.weight,0,1,16777216,1484,1484,0.008845329284667969
+model.layers.34.self_attn.q_proj.weight,1,0,16777216,7560,7560,0.04506111145019531
+model.layers.34.self_attn.k_proj.weight,1,0,4194304,921,921,0.021958351135253906
+model.layers.34.self_attn.v_proj.weight,1,0,4194304,1024,1024,0.0244140625
+model.layers.34.self_attn.o_proj.weight,1,0,16777216,7675,7675,0.045746564865112305
+model.layers.34.mlp.gate_proj.weight,1,0,50331648,11697,11697,0.023239850997924805
+model.layers.34.mlp.up_proj.weight,1,0,50331648,11867,11867,0.02357761065165202
+model.layers.34.mlp.down_proj.weight,1,0,50331648,11571,11571,0.022989511489868164
