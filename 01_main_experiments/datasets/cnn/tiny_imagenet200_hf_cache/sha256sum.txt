@@ -1,0 +1,1 @@
+b0d3c990a1d481006aea1c9d5e818a64416f24c98255d68f93924934d1e8ae83  01_main_experiments/datasets/cnn/tiny_imagenet200_hf_cache/tiny_imagenet200_zh_plus_hf_bundle.tar.gz
